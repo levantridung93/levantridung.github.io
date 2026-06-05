@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lê Văn Trí Dũng | Digital Portfolio</title>
+    
+    <!-- Google Fonts: Import font Inter cao cấp từ web của Thắng -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- HỆ THỐNG MÀU SẮC CYBERPUNK PREMIUM --- */
+        :root {
+            --bg-dark: #0b0f19;         /* Nền tối sâu thẳm giống web Thắng */
+            --card-bg: rgba(20, 27, 45, 0.6); /* Thẻ kính mờ trong suốt */
+            --card-border: rgba(255, 255, 255, 0.08);
+            --accent-glow: #00f2fe;     /* Xanh neon phát quang */
+            --accent-purple: #7928ca;   /* Tím huyền ảo */
+            --text-main: #f3f4f6;       /* Chữ trắng sáng */
+            --text-muted: #9ca3af;      /* Chữ xám mờ */
+            --white: #ffffff;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--text-main);
+            background-color: var(--bg-dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+            position: relative;
+            padding-bottom: 80px;
+        }
+
+        /* --- HIỆU ỨNG ĐỐM SÁNG PHÁT QUANG (GLOW ORBS) --- */
+        .glow-orb {
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: -1;
+            filter: blur(100px);
+            opacity: 0.15;
+            animation: pulse 8s infinite alternate;
+        }
+        .orb-1 {
+            top: -10%;
+            left: -10%;
+            background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+        }
+        .orb-2 {
+            top: 50%;
+            right: -10%;
+            background: radial-gradient(circle, var(--accent-purple) 0%, transparent 70%);
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 0.12; }
+            100% { transform: scale(1.1); opacity: 0.18; }
+        }
+
+        /* --- STICKY GLASSMORPHISM HEADER --- */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(11, 15, 25, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--card-border);
+            padding: 20px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #fff 0%, var(--accent-glow) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 1px;
+        }
+
+        header p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        /* --- THANH ĐIỀU HƯỚNG TABS PREMIUM --- */
+        .nav-tabs {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 6px;
+            border-radius: 30px;
+            border: 1px solid var(--card-border);
+            margin-bottom: 40px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .nav-tabs li {
+            flex: 1;
+            text-align: center;
+        }
+
+        .nav-tabs a {
+            display: block;
+            padding: 12px 10px;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            border-radius: 25px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+        }
+
+        .nav-tabs a.active, .nav-tabs a:hover {
+            background: linear-gradient(135deg, rgba(0, 242, 254, 0.15) 0%, rgba(121, 40, 202, 0.15) 100%);
+            color: var(--white);
+            border: 1px solid rgba(0, 242, 254, 0.3);
+            box-shadow: 0 0 15px rgba(0, 242, 254, 0.1);
+        }
+
+        /* --- CẤU TRÚC HIỂN THỊ NỘI DUNG --- */
+        .portfolio-section {
+            display: none;
+            animation: fadeIn 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .portfolio-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 30px;
+            position: relative;
+            display: inline-block;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: -6px;
+            left: 0;
+            width: 50%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-glow), var(--accent-purple));
+            border-radius: 2px;
+        }
+
+        h3 {
+            color: var(--white);
+            font-weight: 600;
+            margin-top: 25px;
+            margin-bottom: 12px;
+        }
+
+        /* --- TRANG 1: THIẾT KẾ PROFILE --- */
+        .profile-grid {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 40px;
+            align-items: start;
+        }
+
+        @media (max-width: 768px) {
+            .profile-grid { grid-template-columns: 1fr; gap: 25px; }
+        }
+
+        .info-card {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 16px;
+            border: 1px solid var(--card-border);
+            backdrop-filter: blur(6px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .info-item {
+            margin-bottom: 20px;
+        }
+
+        .info-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .info-item strong {
+            display: block;
+            color: var(--accent-glow);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+        }
+
+        .info-item span {
+            font-size: 1.05rem;
+            font-weight: 500;
+        }
+
+        .profile-text p {
+            color: var(--text-muted);
+            margin-bottom: 20px;
+            text-align: justify;
+        }
+
+        /* --- TRANG 2: THIẾT KẾ BÀI TẬP DẠNG LƯỚI (GRID MATRIX) --- */
+        .exercise-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(48%, 1fr));
+            gap: 25px;
+        }
+
+        @media (max-width: 768px) {
+            .exercise-grid { grid-template-columns: 1fr; }
+        }
+
+        .exercise-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 25px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(6px);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .exercise-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(0, 242, 254, 0.4);
+            box-shadow: 0 15px 30px rgba(0, 242, 254, 0.1);
+        }
+
+        .exercise-meta {
+            background: rgba(0, 242, 254, 0.08);
+            border: 1px solid rgba(0, 242, 254, 0.2);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 15px;
+            color: var(--accent-glow);
+            width: fit-content;
+        }
+
+        .exercise-card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 20px;
+        }
+
+        .rubric-analysis {
+            background: rgba(255, 255, 255, 0.02);
+            border-left: 3px solid var(--accent-purple);
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 0 8px 8px 0;
+            font-size: 0.9rem;
+            color: #d1d5db;
+        }
+
+        .rubric-title {
+            font-weight: 700;
+            color: var(--accent-purple);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+        }
+
+        /* --- HỆ THỐNG NÚT BẤM CYBER BUTTONS --- */
+        .btn-group {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn {
+            flex: 1;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 16px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            border: none;
+            text-align: center;
+        }
+
+        .btn-view {
+            background: linear-gradient(135deg, var(--accent-glow) 0%, #00b8d4 100%);
+            color: #05050a;
+            box-shadow: 0 4px 15px rgba(0, 242, 254, 0.2);
+        }
+
+        .btn-view:hover {
+            opacity: 0.9;
+            box-shadow: 0 4px 20px rgba(0, 242, 254, 0.4);
+        }
+
+        .btn-download {
+            background: transparent;
+            color: var(--text-main);
+            border: 1px solid var(--card-border);
+        }
+
+        .btn-download:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: var(--text-muted);
+        }
+
+        /* --- TRANG 3: TỔNG KẾT --- */
+        .summary-box {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            padding: 30px;
+            border-radius: 16px;
+            margin-bottom: 25px;
+        }
+
+        .summary-list {
+            margin-left: 20px;
+            color: var(--text-muted);
+        }
+
+        .summary-list li {
+            margin-bottom: 10px;
+        }
+
+        .summary-list strong {
+            color: var(--text-main);
+        }
+
+        /* --- FOOTER CHUẨN TỐI GIẢN --- */
+        footer {
+            text-align: center;
+            padding: 25px;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            border-top: 1px solid var(--card-border);
+            background: rgba(11, 15, 25, 0.9);
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            left: 0;
+            z-index: 90;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Tạo đốm sáng phát quang ẩn dưới nền giống web của Thắng -->
+    <div class="glow-orb orb-1"></div>
+    <div class="glow-orb orb-2"></div>
+
+    <header>
+        <h1>DIGITAL PORTFOLIO</h1>
+        <p>Học phần: Nhập môn Công nghệ số và Ứng dụng Trí tuệ nhân tạo</p>
+    </header>
+
+    <div class="container">
+        <!-- Thanh điều hướng Tab đổi hiệu ứng sang xịn mịn -->
+        <ul class="nav-tabs">
+            <li><a onclick="switchTab('trang-gioi-thieu')" id="tab-trang-gioi-thieu" class="active">Giới thiệu</a></li>
+            <li><a onclick="switchTab('trang-du-an')" id="tab-trang-du-an">Dự án & Bài tập</a></li>
+            <li><a onclick="switchTab('trang-tong-ket')" id="tab-trang-tong-ket">Tổng kết</a></li>
+        </ul>
+
+        <!-- ================= TRANG 1: GIỚI THIỆU ================= -->
+        <div id="trang-gioi-thieu" class="portfolio-section active">
+            <h2>Giới thiệu bản thân</h2>
+            <div class="profile-grid" style="margin-top: 20px;">
+                <div class="info-card">
+                    <div class="info-item">
+                        <strong>Họ và Tên</strong>
+                        <span>Lê Văn Trí Dũng</span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Ngày tháng năm sinh</strong>
+                        <span>[Điền ngày sinh của bồ vào đây]</span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Số điện thoại</strong>
+                        <span>[Điền số điện thoại của bồ vào đây]</span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Địa chỉ Email</strong>
+                        <span>[Điền Gmail của bồ vào đây]</span>
+                    </div>
+                </div>
+                <div class="profile-text">
+                    <h3>Mục tiêu học tập & Định hướng phát triển</h3>
+                    <p>Là một sinh viên kỹ thuật trong kỷ nguyên số, mục tiêu hàng đầu của em là chủ động làm chủ các công cụ công nghệ hiện đại, phát triển năng lực tư duy giải thuật khoa học và tối ưu hóa quy trình quản lý thông tin. Định hướng của bản thân là không ngừng cập nhật kiến thức chuyên môn, ứng dụng linh hoạt các mô hình trí tuệ nhân tạo (AI) một cách có trách nhiệm nhằm nâng cao hiệu suất học tập, giải quyết các bài toán phức tạp và xây dựng nền tảng vững chắc cho sự nghiệp nghiên cứu, phát triển công nghệ trong tương lai.</p>
+                    
+                    <h3>Mục tiêu của Portfolio</h3>
+                    <p>Portfolio này được xây dựng như một không gian lưu trữ và hệ thống hóa toàn bộ các minh chứng năng lực số đã tích lũy xuyên suốt học phần. Qua đó, sản phẩm không chỉ thể hiện trực quan các kỹ năng thực thi thực tế (từ tổ chức hệ thống tệp tin, tối ưu hóa công cụ tìm kiếm, kỹ nghệ Prompt Engineering đến làm việc nhóm và ứng dụng đạo đức AI) mà còn là công cụ hữu ích để phản chiếu sự tiến bộ, giúp dễ dàng truy cập, chia sẻ sản phẩm học thuật với giảng viên và cộng đồng một cách trực quan, khoa học nhất.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= TRANG 2: DỰ ÁN & BÀI TẬP (DẠNG LƯỚI GRID ĐẸP MẮT) ================= -->
+        <div id="trang-du-an" class="portfolio-section">
+            <h2>Sản phẩm cấu thành dữ liệu số</h2>
+            <p style="color: var(--text-muted); margin-bottom: 30px; font-size: 0.95rem;">Hệ thống hóa 6 nhiệm vụ bài tập đã hoàn thiện, đạt tiêu chuẩn tối cao (Mức 4) theo Rubric đánh giá.</p>
+
+            <div class="exercise-grid">
+                <!-- BÀI TẬP 1 -->
+                <div class="exercise-card">
+                    <div>
+                        <div class="exercise-meta">Bài tập 1 - Bài 1</div>
+                        <h3>Máy tính & Thiết bị ngoại vi</h3>
+                        <p>Làm chủ phần cứng cá nhân, tối ưu hóa lưu trữ thông qua thiết lập cấu trúc quản lý tệp tin khoa học.</p>
+                        <div class="rubric-analysis">
+                            <div class="rubric-title">🏆 Đánh giá Mức 4:</div>
+                            Hệ thống dữ liệu học tập được tổ chức theo cấu trúc hình cây phân cấp logic nghiêm ngặt, áp dụng quy tắc đặt tên kết hợp Mã môn học - Tên nhiệm vụ - Phiên bản - Dòng thời gian [YYYYMMDD], tối ưu hóa 100% tốc độ truy xuất thông tin.
+                        </div>
+                    </div>
+                    <div class="btn-group">
+                        <a href="baitap1-maytinh.pdf" target="_blank" class="btn btn-view">Xem PDF</a>
+                        <a href="baitap1-maytinh.pdf" download class="btn btn-download">Tải về</a>
+                    </div>
+                </div>
+
+                <!-- BÀI TẬP 2 -->
+                <div class="exercise-card">
+                    <div>
+                        <div class="exercise-meta">Bài tập 2 - Bài 2</div>
+                        <h3>Khai thác thông tin số</h3>
+                        <p>Nâng cao năng lực định vị, khai thác và kiểm định độ tin cậy của các nguồn học thuật nghiên cứu.</p>
+                        <div class="rubric-analysis">
+                            <div class="rubric-title">🏆 Đánh giá Mức 4:</div>
+                            Vận dụng linh hoạt phối hợp đồng thời trên 4 toán tử nâng cao chuyên sâu để sàng lọc chuẩn xác bài báo khoa học chất lượng cao, thiết lập ma trận kiểm định tài liệu khắt khe.[cite: 1]
+                        </div>
+                    </div>
+                    <div class="btn-group">
+                        <a href="baitap2-khaihacthdulieu.pdf" target="_blank" class="btn btn-view">Xem PDF</a>
+                        <a href="baitap2-khaihacthdulieu.pdf" download class="btn btn-download">Tải về</a>
+                    </div>
+                </div>
+
+                <!-- BÀI TẬP 3 -->
+                <div class="exercise-card">
+                    <div>
+                        <div class="exercise-meta">Bài tập 2 - Bài 3</div>
+                        <h3>Tổng quan về Trí tuệ Nhân tạo</h3>
+                        <p>Phát triển kỹ năng cộng tác hiệu quả với LLM qua cấu trúc câu lệnh Prompt Engineering chuyên sâu.</p>
+                        <div class="rubric-analysis">
+                            <div class="rubric-title">🏆 Đánh giá Mức 4:</div>
+                            Đối đối sánh tường tận Prompt gốc và Prompt cải tiến áp dụng chuẩn cấu trúc cao cấp, phân tích sâu sắc cơ chế hoạt động nội tại của mô hình AI nhằm triệt tiêu hiện tượng ảo tưởng dữ liệu.[cite: 1]
+                        </div>
+                    </div>
+                    <div class="btn-group">
+                        <a href="baitap3-promptengineering.pdf" target="_blank" class="btn btn-view">Xem PDF</a>
+                        <a href="baitap3-promptengineering.pdf" download class="btn btn-download">Tải về</a>
+                    </div>
+                </div>
+
+                <!-- BÀI TẬP 4 -->
+                <div class="exercise-card">
+                    <div>
+                        <div class="exercise-meta">Bài tập 3 - Bài 4</div>
+                        <h3>Hợp tác trong môi trường số</h3>
+                        <p>Thiết lập và vận hành không gian làm việc trực tuyến đồng bộ, tối ưu hóa quy trình phối hợp nhóm.</p>
+                        <div class="rubric-analysis">
+                            <div class="rubric-title">🏆 Đánh giá Mức 4:</div>
+                            Tích hợp và ứng dụng thành thạo mô hình Kanban, thiết lập quy trình tự động hóa tự động, phân quyền nhiệm vụ nghiêm ngặt và theo dõi sát sao biểu đồ tiến độ thời gian thực.[cite: 1]
+                        </div>
+                    </div>
+                    <div class="btn-group">
+                        <a href="baitap4-hoptactructuyen.pdf" target="_blank" class="btn btn-view">Xem PDF</a>
+                        <a href="baitap4-hoptactructuyen.pdf" download class="btn btn-download">Tải về</a>
+                    </div>
+                </div>
+
+                <!-- BÀI TẬP 5 -->
+                <div class="exercise-card">
+                    <div>
+                        <div class="exercise-meta">Bài tập 2 - Bài 5</div>
+                        <h3>Sáng tạo nội dung số</h3>
+                        <p>Ứng dụng tích hợp đa phương tiện và công cụ Generative AI để sản xuất ấn phẩm truyền thông thẩm mỹ cao.</p>
+                        <div class="rubric-analysis">
+                            <div class="rubric-title">🏆 Đánh giá Mức 4:</div>
+                            Sản phẩm đạt độ hoàn thiện kỹ thuật đồ họa chuyên nghiệp, tích hợp mượt mà tư duy sáng tạo gốc cá nhân kết hợp nhịp nhàng với năng lực xử lý hình ảnh/văn bản từ AI hỗ trợ.[cite: 1]
+                        </div>
+                    </div>
+                    <div class="btn-group">
+                        <a href="baitap5-sangtaonoidung.pdf" target="_blank" class="btn btn-view">Xem PDF</a>
+                        <a href="baitap5-sangtaonoidung.pdf" download class="btn btn-download">Tải về</a>
+                    </div>
+                </div>
+
+                <!-- BÀI TẬP 6 -->
+                <div class="exercise-card">
+                    <div>
+                        <div class="exercise-meta">Bài tập 4 - Bài 6</div>
+                        <h3>An toàn & Liêm chính học thuật</h3>
+                        <p>Xác lập khung hành vi ứng xử, bảo mật dữ liệu và thực thi nguyên tắc đạo đức công nghệ.</p>
+                        <div class="rubric-analysis">
+                            <div class="rubric-title">🏆 Đánh giá Mức 4:</div>
+                            Phân tích phản biện sắc bén các vấn đề đạo đức AI đương đại: bản quyền sở hữu trí tuệ, thiên kiến thuật toán và trách nhiệm đối chứng nhằm chống lại sai lệch dữ liệu.[cite: 1]
+                        </div>
+                    </div>
+                    <div class="btn-group">
+                        <a href="baitap6-aicotrachnhiem.pdf" target="_blank" class="btn btn-view">Xem PDF</a>
+                        <a href="baitap6-aicotrachnhiem.pdf" download class="btn btn-download">Tải về</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= TRANG 3: TỔNG KẾT ================= -->
+        <div id="trang-tong-ket" class="portfolio-section">
+            <h2>Tổng kết & Đánh giá cá nhân</h2>
+            
+            <div class="summary-box" style="margin-top: 20px;">
+                <h3>1. Khó khăn và Thách thức đối mặt</h3>
+                <ul class="summary-list">
+                    <li><strong>Triển khai hệ thống mã nguồn:</strong> Làm quen với môi trường Git, kiểm soát xung đột dữ liệu và tối ưu CSS responsive hoạt động mượt mà đa thiết bị đòi hỏi thời gian nghiên cứu sâu.</li>
+                    <li><strong>Quản lý đồng bộ dữ liệu:</strong> Kiểm soát nghiêm ngặt 6 file báo cáo lớn tránh ghi đè dữ liệu cũ trong quá trình cập nhật lên đám mây.</li>
+                </ul>
+            </div>
+
+            <div class="summary-box">
+                <h3>2. Sự trưởng thành về năng lực số</h3>
+                <p style="color: var(--text-muted); text-align: justify;">Trải qua học phần, từ một người sử dụng công nghệ theo bản năng, em đã hình thành tư duy hệ thống hóa khoa học: biết cách quản lý dữ liệu tối ưu, sở hữu kỹ năng khai thác và kiểm định thông tin sâu sắc, và đặc biệt là năng lực "cộng tác" với AI hiệu quả thông qua kỹ nghệ Prompt chuyên sâu thay vì phụ thuộc thụ động. Portfolio này chính là minh chứng rõ nét cho sự chuyển mình thành một công dân số có trách nhiệm.</p>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2026 Lê Văn Trí Dũng. Sinh viên VNU-UET. Môn Công nghệ số & Ứng dụng AI.</p>
+    </footer>
+
+    <!-- JavaScript xử lý chuyển đổi tab mượt mà -->
+    <script>
+        function switchTab(tabId) {
+            const sections = document.querySelectorAll('.portfolio-section');
+            sections.forEach(section => section.classList.remove('active'));
+            
+            const tabs = document.querySelectorAll('.nav-tabs a');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            
+            document.getElementById(tabId).classList.add('active');
+            document.getElementById('tab-' + tabId).classList.add('active');
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
